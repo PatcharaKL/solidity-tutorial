@@ -7,21 +7,57 @@
     <link href="./styles/index.css" rel="stylesheet" />
     <script>
       // jQuery script
-      $(()=>{
-        $('#btn1').on('click', e => {
-          $('.myBox').show();
-
-        })
-        $('.myBox').on('click', e => {
-          $('.myBox').hide();
-        })
-      })
+      $(() => {
+        // $('#btn1').on('click', e => {
+        //   if($('.myBox').hasClass('red'))
+        //   $('.myBox').removeClass('red')
+        // })
+        // $(".myBox").on("click", (e) => {
+        //   $(".myBox").toggleClass("red");
+        // });
+        // $("#btn2").on("click", (e) => {
+        //   $(".myBox").slideUp("slow");
+        // });
+        // $("#btn3").on("click", (e) => {
+        //   $(".myBox").slideDown("300");
+        // });
+        // $("#btn-fade-in").on("click", (e) => {
+        //   $(".myBox").fadeIn("300");
+        // });
+        // $("#btn-fade-out").on("click", (e) => {
+        //   $(".myBox").fadeOut("300");
+        // });
+        $("#btn1").on("click", (e) => {
+          $(`li:nth-child(${Math.floor(Math.random() * 8)})`).toggleClass("bold");
+          // $("li:odd").toggleClass("red");
+        });
+      });
     </script>
   </head>
   <body>
     <h1>01- jQuery Tutorial</h1>
-    <div class="myBox"></div>
-    <br>
-    <button id="btn1">Click me</button>
+    <!-- <div class="myBox"></div> -->
+    <br />
+    <div>
+      <button id="btn1">Click Me</button>
+      <!-- <div>
+        <button id="btn2">Hide</button>
+        <button id="btn3">Show</button>
+      </div>
+      <div>
+        <button id="btn-fade-in">Fade in</button>
+        <button id="btn-fade-out">Fade out</button>
+      </div> -->
+    </div>
+    <ul>
+      <li>Item #1</li>
+      <li>Item #2</li>
+      <li>Item #3</li>
+      <li>Item #4</li>
+      <li>Item #5</li>
+      <li>Item #6</li>
+      <li>Item #7</li>
+      <li>Item #8</li>
+    </ul>
   </body>
 </html>
