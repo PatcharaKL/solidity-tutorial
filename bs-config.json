@@ -1,5 +1,5 @@
 {
-    "server": {
-        "baseDir": ["./src", "./node_modules", "./build/contracts"]
-    }
+  "server": {
+    "baseDir": ["./src", "./node_modules", "./build/contracts"]
+  }
 }
