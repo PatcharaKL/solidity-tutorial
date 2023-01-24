@@ -6,11 +6,22 @@
     <script src="jquery/dist/jquery.min.js"></script>
     <link href="./styles/index.css" rel="stylesheet" />
     <script>
-      // script
+      // jQuery script
+      $(()=>{
+        $('#btn1').on('click', e => {
+          $('.myBox').show();
+
+        })
+        $('.myBox').on('click', e => {
+          $('.myBox').hide();
+        })
+      })
     </script>
   </head>
   <body>
     <h1>01- jQuery Tutorial</h1>
     <div class="myBox"></div>
+    <br>
+    <button id="btn1">Click me</button>
   </body>
 </html>
