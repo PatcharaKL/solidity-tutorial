@@ -6,17 +6,6 @@
     <script src="js/02-basic.js"></script>
     <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.min.css" />
     <title>Basic DApp</title>
-    <script>
-      $(()=>{
-        $("#btn-submit").on("click", (e) => {
-          const p1 = parseFloat($("#param1").val());
-          const p2 = parseFloat($("#param2").val());
-          if(!Number.isNaN(p1) || !Number.isNaN(p2)){
-            $('#result').text(p1 + p2)
-          }          
-        });
-      })
-    </script>
   </head>
   <body>
     <div class="container-fluid"></div>
