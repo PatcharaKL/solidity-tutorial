@@ -26,6 +26,46 @@ contract("BasicMath", () => {
     const actual = await basicMath.subtract.call(x, y);
 
     // Assert
-    assert.equal(actual, expected, "The subtract function returns incorrect result");
+    assert.equal(
+      actual,
+      expected,
+      "The subtract function returns incorrect result"
+    );
   });
+
+  it("should return the divided result correctly", async () => {
+    // Arrange
+    const basicMath = await BasicMath.deployed();
+    const x = 5;
+    const y = 5;
+    const expected = x / y; // 1
+
+    // ACT
+    const actual = await basicMath.divide.call(x, y);
+
+    // Assert
+    assert.equal(
+      actual,
+      expected,
+      "The divide function returns incorrect result"
+    );
+  });
+});
+
+it("should return the multiply result correctly", async () => {
+  // Arrange
+  const basicMath = await BasicMath.deployed();
+  const x = 5;
+  const y = 5;
+  const expected = x * y; // 25
+
+  // ACT
+  const actual = await basicMath.multiply.call(x, y);
+
+  // Assert
+  assert.equal(
+    actual,
+    expected,
+    "The multiply function returns incorrect result"
+  );
 });
