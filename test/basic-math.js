@@ -50,22 +50,23 @@ contract("BasicMath", () => {
       "The divide function returns incorrect result"
     );
   });
+  
+  it("should return the multiply result correctly", async () => {
+    // Arrange
+    const basicMath = await BasicMath.deployed();
+    const x = 5;
+    const y = 5;
+    const expected = x * y; // 25
+  
+    // ACT
+    const actual = await basicMath.multiply.call(x, y);
+  
+    // Assert
+    assert.equal(
+      actual,
+      expected,
+      "The multiply function returns incorrect result"
+    );
+  });
 });
 
-it("should return the multiply result correctly", async () => {
-  // Arrange
-  const basicMath = await BasicMath.deployed();
-  const x = 5;
-  const y = 5;
-  const expected = x * y; // 25
-
-  // ACT
-  const actual = await basicMath.multiply.call(x, y);
-
-  // Assert
-  assert.equal(
-    actual,
-    expected,
-    "The multiply function returns incorrect result"
-  );
-});
