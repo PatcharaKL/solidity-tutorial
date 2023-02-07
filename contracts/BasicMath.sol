@@ -11,6 +11,7 @@ contract BasicMath {
     }
 
     function divide(int256 x, int256 y) public pure returns (int256) {
+        require(y != 0, "Divide by zero");
         return x / y;
     }
 
