@@ -1,4 +1,39 @@
-$(() => {
+// on page load
+
+const BASIC_MATH_CONTRACT_ABI = "BasicMath.json"
+let BasicMath;
+
+const deployContract = async () => {
+  // Load Contract abi via AJAX
+  $.getJSON(BASIC_MATH_CONTRACT_ABI, async contractABI => {
+    // console.log(contractABI)
+    try{
+      const contract = TruffleContract(contractABI);
+      contract.setProvider(web3.currentProvider);
+      basicMath = await contract.deployed();
+      console.log(basicMath)
+    }catch (err) {
+      console.log(err)
+    }
+  });
+}
+
+$(async () => {
+
+  // init web3
+  try {
+    await initWeb3();
+  }
+  catch (err) {
+    console.log(`Error on init Web3 ${err}`)
+  }
+  try {
+    await deployContract();
+  }
+  catch (err) {
+    console.log(`Error deploying contract ${err}`)
+  }
+
   $("#btn-submit").on("click", (e) => {
     const { p1, p2 } = getParameter();
     if (validate(p1, p2)) {
