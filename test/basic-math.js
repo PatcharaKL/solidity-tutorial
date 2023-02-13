@@ -1,3 +1,7 @@
+// * BasicMath automate testing by 'puppeteer' and 'mocha'
+// * This test file follow AAA testing pattern (Arrange, Act, Assert)
+// * and refactored to use testing table
+
 const puppeteer = require("puppeteer");
 const BASIC_MATH_URL = "http://localhost:3000/02-basic.html";
 let browser, page;
@@ -29,32 +33,34 @@ const caseBuilder = (title, x, y, buttonID, expect) => {
   };
 };
 
-// Arrange
-const It = caseBuilder
-const tests = [
+//* (1) Arrange
+const It = caseBuilder // for readability
+const testCases = [
   It("should return the addition(+) result correctly", 10, 5, "#btn-add", 15),
   It("should return the subtraction(-) result correctly", 80, 5, "#btn-remove", 75),
   It("should return the multiply(*) result correctly", 10, 3, "#btn-multiply", 30),
   It("should return the divide(/) result correctly", 20, 2, "#btn-divide", 10),
-  It("Should return Divide by zero", 20, 0, "#btn-divide", "revert Divide by zero"),
+  It("Should return Divide by zero", 20, 0, "#btn-divide", "Divide by zero"),
+  //...
 ];
 
 contract("BasicMath", () => {
   testSetup()
-
-  tests.forEach(async (test) => {
+  testCases.forEach(async (test) => {
+    //* Test table
     it(test.title, async () => {
+      //* (2) Act
       await inputData("#param1", test.x);
       await inputData('#param2', test.y);
       await clickBtn(test.buttonID);
       const actual = await getResult();
-
+      //* (3) Assert
       await assert.equal(actual, test.expect);
     });
   });
 });
 
-// Helper
+// Client action
 const inputData = async (textBoxID, value) => {
   const param1 = await page.waitForSelector(textBoxID);
   await param1.focus();
@@ -64,6 +70,8 @@ const clickBtn = async (btnID) => {
   const btnAdd = await page.waitForSelector(btnID);
   await btnAdd.click(); 
 };
+
+// Helper
 const getResult = async () => {
   await new Promise((done) => setTimeout(done, 100)) //? Wait for result to be display properly.
   const selectedElement = await page.waitForSelector("#result");
