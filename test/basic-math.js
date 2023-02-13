@@ -1,89 +1,72 @@
-const BasicMath = artifacts.require("BasicMath");
+const puppeteer = require("puppeteer");
+const BASIC_MATH_URL = "http://localhost:3000/02-basic.html";
+let browser, page;
+
+const testSetup = () => {
+  before(async () => {
+    browser = await puppeteer.launch({
+      headless: false,
+      defaultViewport: null,
+      args: [`--window-size=1200,800`],
+    });
+    page = await browser.newPage();
+    await page.goto(BASIC_MATH_URL);
+  });
+
+  after(async () => {
+    await page.close();
+    await browser.close();
+  });
+}
+
+const caseBuilder = (title, x, y, buttonID, expect) => {
+  return {
+    title: title,
+    x: x,
+    y: y,
+    buttonID: buttonID,
+    expect: expect,
+  };
+};
+
+// Arrange
+const It = caseBuilder
+const tests = [
+  It("should return the addition(+) result correctly", 10, 5, "#btn-add", 15),
+  It("should return the subtraction(-) result correctly", 80, 5, "#btn-remove", 75),
+  It("should return the multiply(*) result correctly", 10, 3, "#btn-multiply", 30),
+  It("should return the divide(/) result correctly", 20, 2, "#btn-divide", 10),
+  It("Should return Divide by zero", 20, 0, "#btn-divide", "revert Divide by zero"),
+];
 
 contract("BasicMath", () => {
-  it("should return the addition result correctly", async () => {
-    // Arrange
-    const basicMath = await BasicMath.deployed();
-    const x = 7;
-    const y = 5;
-    const expected = x + y; // 12
+  testSetup()
 
-    // ACT
-    const actual = await basicMath.add.call(x, y);
+  tests.forEach(async (test) => {
+    it(test.title, async () => {
+      await inputData("#param1", test.x);
+      await inputData('#param2', test.y);
+      await clickBtn(test.buttonID);
+      const actual = await getResult();
 
-    // Assert
-    assert.equal(actual, expected, "The add function returns incorrect result");
-  });
-
-  it("should return the subtraction result correctly", async () => {
-    // Arrange
-    const basicMath = await BasicMath.deployed();
-    const x = 5;
-    const y = 6;
-    const expected = x - y; // -1
-
-    // ACT
-    const actual = await basicMath.subtract.call(x, y);
-
-    // Assert
-    assert.equal(
-      actual,
-      expected,
-      "The subtract function returns incorrect result"
-    );
-  });
-
-  it("should return the divided result correctly", async () => {
-    // Arrange
-    const basicMath = await BasicMath.deployed();
-    const x = 5;
-    const y = 5;
-    const expected = Math.floor(x / y); // 1
-
-    // ACT
-    const actual = await basicMath.divide.call(x, y);
-
-    // Assert
-    assert.equal(
-      actual,
-      expected,
-      "The divide function returns incorrect result"
-    );
-  });
-  it("should return divide by zero when argument is divide by zero", async () => {
-    // Arrange
-    const basicMath = await BasicMath.deployed();
-    const x = 5;
-    const y = 0;
-    const expected = "Divide by zero";
-
-    // ACT
-    const actual = await basicMath.divide.call(x, y);
-
-    // Assert
-    assert.equal(
-      actual,
-      expected,
-      "The divide function does not returns divide by zero"
-    );
-  });
-  
-  it("should return the multiply result correctly", async () => {
-    // Arrange
-    const basicMath = await BasicMath.deployed();
-    const x = 5;
-    const y = 5;
-    const expected = x * y; // 25
-  
-    // ACT
-    const actual = await basicMath.multiply.call(x, y);
-  
-    // Assert
-    assert.equal(
-      actual,
-      expected,
-      "The multiply function returns incorrect result"
-    );
+      await assert.equal(actual, test.expect);
+    });
   });
 });
 
+// Helper
+const inputData = async (textBoxID, value) => {
+  const param1 = await page.waitForSelector(textBoxID);
+  await param1.focus();
+  await page.keyboard.type(String(value), { delay: 100 });
+};
+const clickBtn = async (btnID) => {
+  const btnAdd = await page.waitForSelector(btnID);
+  await btnAdd.click(); 
+};
+const getResult = async () => {
+  await new Promise((done) => setTimeout(done, 100)) //? Wait for result to be display properly.
+  const selectedElement = await page.waitForSelector("#result");
+  const result = await selectedElement.evaluate((el) => el.textContent);
+  return result;
+};

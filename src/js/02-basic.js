@@ -19,7 +19,6 @@ const deployContract = async () => {
 }
 
 $(async () => {
-
   // init web3
   try {
     await initWeb3();
@@ -34,15 +33,66 @@ $(async () => {
     console.log(`Error deploying contract ${err}`)
   }
 
-  $("#btn-submit").on("click", (e) => {
+  $("#btn-add").on("click", async (e) => {
     const { p1, p2 } = getParameter();
     if (validate(p1, p2)) {
-      applyResult(p1, p2);
-    } else {
-      $("#result").text("one of the param is not a number");
+      try {
+        const result = await basicMath.add(p1, p2)
+        applyResult(result)
+      } catch (e) {
+        console.log(e)
+      }
+    }
+    else {
+      $("#result").text("Please enter number");
+    }
+  });
+  $("#btn-remove").on("click", async (e) => {
+    const { p1, p2 } = getParameter();
+    if (validate(p1, p2)) {
+      try {
+        const result = await basicMath.subtract(p1, p2)
+        applyResult(result)
+      } catch (e) {
+        console.log(e)
+      }
+    }
+    else {
+      $("#result").text("Please enter number");
+    }
+  });
+  $("#btn-multiply").on("click", async (e) => {
+    const { p1, p2 } = getParameter();
+    if (validate(p1, p2)) {
+      try {
+        const result = await basicMath.multiply(p1, p2)
+        applyResult(result)
+      } catch (e) {
+        console.log(e)
+      }
+    }
+    else {
+      $("#result").text("Please enter number");
+    }
+  });
+  $("#btn-divide").on("click", async (e) => {
+    const { p1, p2 } = getParameter();
+    if (validate(p1, p2)) {
+      try {
+        const result = await basicMath.divide(p1, p2)
+        applyResult(result)
+      } catch (e) {
+        console.log(e.message)
+        let error = e.message.split(":")
+        $("#result").text(error[2].trim().slice(7));
+      }
+    }
+    else {
+      $("#result").text("Please enter number");
     }
   });
 });
+
 
 const getParameter = () => {
   const p1 = parseFloat($("#param1").val());
@@ -57,8 +107,8 @@ const validate = (p1, p2) => {
   return false;
 };
 
-const applyResult = (p1, p2) => {
-  $("#result").text(p1 + p2);
-  $("#param1").text("");
-  $("#param2").text("");
+const applyResult = (res) => {
+  $("#result").text(res);
+  $("#param1").val("");
+  $("#param2").val("");
 };
