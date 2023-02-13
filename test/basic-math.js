@@ -33,7 +33,7 @@ const caseBuilder = (title, x, y, buttonID, expect) => {
   };
 };
 
-//* (1) Arrange
+// * (1) Arrange
 const It = caseBuilder // for readability
 const testCases = [
   It("should return the addition(+) result correctly", 10, 5, "#btn-add", 15),
@@ -47,14 +47,14 @@ const testCases = [
 contract("BasicMath", () => {
   testSetup()
   testCases.forEach(async (test) => {
-    //* Test table
+    // * Test table
     it(test.title, async () => {
-      //* (2) Act
+      // * (2) Act
       await inputData("#param1", test.x);
       await inputData('#param2', test.y);
       await clickBtn(test.buttonID);
       const actual = await getResult();
-      //* (3) Assert
+      // * (3) Assert
       await assert.equal(actual, test.expect);
     });
   });
