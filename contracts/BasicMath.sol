@@ -21,8 +21,8 @@ contract BasicMath {
 
     function sum(int256[] memory data) public pure returns (int256) {
         require(data.length > 0, "Empty array is not valid");
-        int256 sumary = 0;
-        for (uint256 i = 0; i < data.length; i++) {
+        int256 sumary = data[0];
+        for (uint256 i = 1; i < data.length; i++) {
             sumary += data[i];
         }
         return sumary;
@@ -48,5 +48,10 @@ contract BasicMath {
             }
         }
         return _max;
+    }
+
+    function mean(int256[] memory data) public pure returns (uint256) {
+        require(data.length > 0, "Empty array is not valid");
+        return uint256(sum(data)) / data.length;
     }
 }

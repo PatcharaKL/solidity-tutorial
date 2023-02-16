@@ -87,6 +87,13 @@ contract("BasicMath", () => {
     const actual = await getResult();
     await assert.equal(actual, expect)
   })
+  it("should return 25 when 'MEAN' args is 10,20,30,40", async ()=>{
+    const expect = 25
+    await inputData('#agg-param', '10 20 30 40')
+    await clickBtn('#btn-mean')
+    const actual = await getResult();
+    await assert.equal(actual, expect)
+  })
 });
 
 // Client action

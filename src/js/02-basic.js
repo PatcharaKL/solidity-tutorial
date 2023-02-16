@@ -111,7 +111,7 @@ $(async () => {
       $("#result").text(e);
     }
   });
-  
+
   $("#btn-max").on("click", async (e) => {
     const param = $("#agg-param").val();
     const stringArg = param.split(" ");
@@ -127,13 +127,13 @@ $(async () => {
     }
   });
   
-  $("#btn-max").on("click", async (e) => {
+  $("#btn-mean").on("click", async (e) => {
     const param = $("#agg-param").val();
     const stringArg = param.split(" ");
     const numArg = stringArg.map(Number)
     console.log(numArg);
     try {
-      const result = await basicMath.max(numArg);
+      const result = await basicMath.mean(numArg);
       applyResult(result);
     } catch (e) {
       console.log(e.message);
