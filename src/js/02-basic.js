@@ -84,14 +84,56 @@ $(async () => {
     }
   });
   $("#btn-sum").on("click", async (e) => {
-    console.log("sum press");
     const param = $("#agg-param").val();
-    const arg = param.split(" ");
-    console.log(arg);
+    const stringArg = param.split(" ");
+    const numArg = stringArg.map(Number)
+    console.log(numArg);
     try {
-      const result = await basicMath.sum(arg);
-      console.log("don't get res");
-      console.log(result);
+      const result = await basicMath.sum(numArg);
+      applyResult(result);
+    } catch (e) {
+      console.log(e.message);
+      let error = e.message.split(":");
+      $("#result").text(e);
+    }
+  });
+  $("#btn-min").on("click", async (e) => {
+    const param = $("#agg-param").val();
+    const stringArg = param.split(" ");
+    const numArg = stringArg.map(Number)
+    console.log(numArg);
+    try {
+      const result = await basicMath.min(numArg);
+      applyResult(result);
+    } catch (e) {
+      console.log(e.message);
+      let error = e.message.split(":");
+      $("#result").text(e);
+    }
+  });
+  
+  $("#btn-max").on("click", async (e) => {
+    const param = $("#agg-param").val();
+    const stringArg = param.split(" ");
+    const numArg = stringArg.map(Number)
+    console.log(numArg);
+    try {
+      const result = await basicMath.max(numArg);
+      applyResult(result);
+    } catch (e) {
+      console.log(e.message);
+      let error = e.message.split(":");
+      $("#result").text(e);
+    }
+  });
+  
+  $("#btn-max").on("click", async (e) => {
+    const param = $("#agg-param").val();
+    const stringArg = param.split(" ");
+    const numArg = stringArg.map(Number)
+    console.log(numArg);
+    try {
+      const result = await basicMath.max(numArg);
       applyResult(result);
     } catch (e) {
       console.log(e.message);

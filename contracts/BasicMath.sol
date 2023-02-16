@@ -27,4 +27,26 @@ contract BasicMath {
         }
         return sumary;
     }
+
+    function min(int256[] memory data) public pure returns (int256) {
+        require(data.length > 0, "Empty array is not valid");
+        int256 _min = data[0];
+        for (uint256 i = 1; i < data.length; i++) {
+            if (data[i] < _min) {
+                _min = data[i];
+            }
+        }
+        return _min;
+    }
+
+    function max(int256[] memory data) public pure returns (int256) {
+        require(data.length > 0, "Empty array is not valid");
+        int256 _max = data[0];
+        for (uint256 i = 1; i < data.length; i++) {
+            if (data[i] > _max) {
+                _max = data[i];
+            }
+        }
+        return _max;
+    }
 }

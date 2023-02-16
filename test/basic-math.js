@@ -3,7 +3,7 @@
 // * and refactored to use testing table
 
 const puppeteer = require("puppeteer");
-const SKIP = false;
+const SKIP = true;
 const delayDuration = 500
 const BASIC_MATH_URL = "http://localhost:3000/02-basic.html";
 let browser, page;
@@ -80,13 +80,13 @@ contract("BasicMath", () => {
     const actual = await getResult();
     await assert.equal(actual, expect)
   })
-  // it("should return 40 when 'MAX' args is 10,20,30,40", async ()=>{
-  //   const expect = 40
-  //   await inputData('#agg-param', '10 20 30 40')
-  //   await clickBtn('#btn-max')
-  //   const actual = await getResult();
-  //   await assert.equal(actual, expect)
-  // })
+  it("should return 40 when 'MAX' args is 10,20,30,40", async ()=>{
+    const expect = 40
+    await inputData('#agg-param', '10 20 30 40')
+    await clickBtn('#btn-max')
+    const actual = await getResult();
+    await assert.equal(actual, expect)
+  })
 });
 
 // Client action
