@@ -3,20 +3,27 @@
 // * and refactored to use testing table
 
 const puppeteer = require("puppeteer");
+const SKIP = false;
+const delayDuration = 500
 const BASIC_MATH_URL = "http://localhost:3000/02-basic.html";
 let browser, page;
+
+const delay = (ms) => new Promise((done) => setTimeout(done, ms));
 
 const testSetup = () => {
   before(async () => {
     browser = await puppeteer.launch({
-      headless: false,
+      headless: SKIP,
       defaultViewport: null,
       args: [`--window-size=1200,800`],
     });
     page = await browser.newPage();
     await page.goto(BASIC_MATH_URL);
   });
-
+  beforeEach(async () => {
+    const result = await page.waitForSelector('#result')
+    await result.evaluate(el => el.textContent = '')
+  })
   after(async () => {
     await page.close();
     await browser.close();
@@ -40,7 +47,7 @@ const testCases = [
   It("should return the subtraction(-) result correctly", 80, 5, "#btn-remove", 75),
   It("should return the multiply(*) result correctly", 10, 3, "#btn-multiply", 30),
   It("should return the divide(/) result correctly", 20, 2, "#btn-divide", 10),
-  It("Should return Divide by zero", 20, 0, "#btn-divide", "Divide by zero"),
+  It("Should return Divide by zero when y is 0", 20, 0, "#btn-divide", "Divide by zero"),
   //...
 ];
 
@@ -58,22 +65,52 @@ contract("BasicMath", () => {
       await assert.equal(actual, test.expect);
     });
   });
+
+  it("should return 100 when 'SUM' args is 10,20,30,40", async ()=>{
+    const expect = 100
+    await inputData('#agg-param', '10 20 30 40')
+    await clickBtn('#btn-sum')
+    const actual = await getResult();
+    await assert.equal(actual, expect)
+  })
+  it("should return 10 when 'MIN' args is 10,20,30,40", async ()=>{
+    const expect = 10
+    await inputData('#agg-param', '10 20 30 40')
+    await clickBtn('#btn-min')
+    const actual = await getResult();
+    await assert.equal(actual, expect)
+  })
+  // it("should return 40 when 'MAX' args is 10,20,30,40", async ()=>{
+  //   const expect = 40
+  //   await inputData('#agg-param', '10 20 30 40')
+  //   await clickBtn('#btn-max')
+  //   const actual = await getResult();
+  //   await assert.equal(actual, expect)
+  // })
 });
 
 // Client action
 const inputData = async (textBoxID, value) => {
+  const kbDelay = SKIP ? {} : {delay: 100};
+  if (!SKIP) {
+    await delay(delayDuration)
+  }
   const param1 = await page.waitForSelector(textBoxID);
   await param1.focus();
-  await page.keyboard.type(String(value), { delay: 100 });
+  await page.keyboard.type(String(value), kbDelay);
 };
 const clickBtn = async (btnID) => {
+  if (!SKIP) {
+    await delay(delayDuration)
+  }
   const btnAdd = await page.waitForSelector(btnID);
-  await btnAdd.click(); 
+  await btnAdd.click();
 };
 
 // Helper
 const getResult = async () => {
-  await new Promise((done) => setTimeout(done, 100)) //? Wait for result to be display properly.
+  const waitForResult = SKIP ? 100 : delayDuration
+  await delay(waitForResult)
   const selectedElement = await page.waitForSelector("#result");
   const result = await selectedElement.evaluate((el) => el.textContent);
   return result;

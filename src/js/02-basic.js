@@ -1,49 +1,44 @@
 // on page load
 
-const BASIC_MATH_CONTRACT_ABI = "BasicMath.json"
-let BasicMath;
+const BASIC_MATH_CONTRACT_ABI = "BasicMath.json";
+let basicMath;
+
+const lazyErrorHandler = async (func, errorMsg = "") => {
+  try {
+    await func();
+  } catch (e) {
+    console.log(`Error: ${e} \nMessage: ${errorMsg}`);
+  }
+};
 
 const deployContract = async () => {
   // Load Contract abi via AJAX
-  $.getJSON(BASIC_MATH_CONTRACT_ABI, async contractABI => {
-    // console.log(contractABI)
-    try{
-      const contract = TruffleContract(contractABI);
-      contract.setProvider(web3.currentProvider);
+  await $.getJSON(BASIC_MATH_CONTRACT_ABI, async (contractABI) => {
+    lazyErrorHandler(async () => {
+      // console.log(contractABI);
+      const contract = await TruffleContract(contractABI);
+      await contract.setProvider(web3.currentProvider);
       basicMath = await contract.deployed();
-      console.log(basicMath)
-    }catch (err) {
-      console.log(err)
-    }
+      console.log(basicMath);
+    });
   });
-}
+};
 
 $(async () => {
   // init web3
-  try {
-    await initWeb3();
-  }
-  catch (err) {
-    console.log(`Error on init Web3 ${err}`)
-  }
-  try {
-    await deployContract();
-  }
-  catch (err) {
-    console.log(`Error deploying contract ${err}`)
-  }
+  await lazyErrorHandler(initWeb3);
+  await lazyErrorHandler(deployContract);
 
   $("#btn-add").on("click", async (e) => {
     const { p1, p2 } = getParameter();
     if (validate(p1, p2)) {
       try {
-        const result = await basicMath.add(p1, p2)
-        applyResult(result)
+        const result = await basicMath.add(p1, p2);
+        applyResult(result);
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
-    }
-    else {
+    } else {
       $("#result").text("Please enter number");
     }
   });
@@ -51,13 +46,12 @@ $(async () => {
     const { p1, p2 } = getParameter();
     if (validate(p1, p2)) {
       try {
-        const result = await basicMath.subtract(p1, p2)
-        applyResult(result)
+        const result = await basicMath.subtract(p1, p2);
+        applyResult(result);
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
-    }
-    else {
+    } else {
       $("#result").text("Please enter number");
     }
   });
@@ -65,13 +59,12 @@ $(async () => {
     const { p1, p2 } = getParameter();
     if (validate(p1, p2)) {
       try {
-        const result = await basicMath.multiply(p1, p2)
-        applyResult(result)
+        const result = await basicMath.multiply(p1, p2);
+        applyResult(result);
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
-    }
-    else {
+    } else {
       $("#result").text("Please enter number");
     }
   });
@@ -79,20 +72,34 @@ $(async () => {
     const { p1, p2 } = getParameter();
     if (validate(p1, p2)) {
       try {
-        const result = await basicMath.divide(p1, p2)
-        applyResult(result)
+        const result = await basicMath.divide(p1, p2);
+        applyResult(result);
       } catch (e) {
-        console.log(e.message)
-        let error = e.message.split(":")
+        console.log(e.message);
+        let error = e.message.split(":");
         $("#result").text(error[2].trim().slice(7));
       }
-    }
-    else {
+    } else {
       $("#result").text("Please enter number");
     }
   });
+  $("#btn-sum").on("click", async (e) => {
+    console.log("sum press");
+    const param = $("#agg-param").val();
+    const arg = param.split(" ");
+    console.log(arg);
+    try {
+      const result = await basicMath.sum(arg);
+      console.log("don't get res");
+      console.log(result);
+      applyResult(result);
+    } catch (e) {
+      console.log(e.message);
+      let error = e.message.split(":");
+      $("#result").text(e);
+    }
+  });
 });
-
 
 const getParameter = () => {
   const p1 = parseFloat($("#param1").val());
@@ -111,4 +118,5 @@ const applyResult = (res) => {
   $("#result").text(res);
   $("#param1").val("");
   $("#param2").val("");
+  $("#agg-param").val("");
 };

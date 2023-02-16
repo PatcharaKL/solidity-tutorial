@@ -26,9 +26,6 @@
               <input type="number" class="form-control" id="param2" />
             </div>
           </div>
-          <div class="row">
-            <p id="result"></p>
-          </div>
           <br />
           <button id="btn-add" class="btn btn-primary">Add</button>
           <button id="btn-remove" class="btn btn-primary">Subtract</button>
@@ -36,6 +33,29 @@
           <button id="btn-divide" class="btn btn-primary">Divide</button>
         </div>
       </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <div>
+          <div class="row">
+            <div class="col">
+              <label for="param1" class="form-label"
+                >Parameter (Split by whitespace)</label
+              >
+              <input class="form-control" id="agg-param" />
+            </div>
+          </div>
+          <br />
+          <button id="btn-sum" class="btn btn-primary">SUM</button>
+          <button id="btn-min" class="btn btn-primary">MIN</button>
+          <button id="btn-max" class="btn btn-primary">MAX</button>
+          <button id="btn-mean" class="btn btn-primary">MEAN</button>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <h4>RESULT</h4>
+      <p id="result"></p>
     </div>
   </body>
 </html>
