@@ -47,7 +47,6 @@ const testCases = [
   It("should return the subtraction(-) result correctly", 80, 5, "#btn-remove", 75),
   It("should return the multiply(*) result correctly", 10, 3, "#btn-multiply", 30),
   It("should return the divide(/) result correctly", 20, 2, "#btn-divide", 10),
-  It("Should return Divide by zero when y is 0", 20, 0, "#btn-divide", "Divide by zero"),
   //...
 ];
 

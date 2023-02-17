@@ -24,12 +24,26 @@ const deployContract = async () => {
   });
 };
 
+const calculate = (calFunc) => {
+  const { p1, p2 } = getParameter();
+    if (!validate(p1, p2)) {
+      $("#result").text("Please enter number");
+      return;
+    }
+    lazyErrorHandler(async ()=>{
+      const result = await calFunc(p1, p2); //TODO: func as param
+      return result;
+    })
+}
+
 $(async () => {
   // init web3
   await lazyErrorHandler(initWeb3);
   await lazyErrorHandler(deployContract);
 
   $("#btn-add").on("click", async (e) => {
+    // const sumResult = calculate(basicMath.add(p1, p2));
+    // applyResult(sumResult);
     const { p1, p2 } = getParameter();
     if (validate(p1, p2)) {
       try {
