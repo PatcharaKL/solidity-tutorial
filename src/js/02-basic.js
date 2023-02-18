@@ -31,7 +31,7 @@ const calculate = (calFunc) => {
       return;
     }
     lazyErrorHandler(async ()=>{
-      const result = await calFunc(p1, p2); //TODO: func as param
+      const result = await calFunc(p1, p2);
       return result;
     })
 }
