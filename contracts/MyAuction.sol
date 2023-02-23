@@ -35,14 +35,18 @@ contract MyAuction is Auction {
 
     function getProductInfo()
         public
-        virtual
+        view
         override
         returns (string memory, string memory)
-    {}
+    {
+        return (myProduct.Brand, myProduct.SerialNum);
+    }
 
     function withdraw() public virtual override returns (bool) {}
 
     function getMyBid(
         address bidder
-    ) public virtual override returns (uint256) {}
+    ) public view override returns (uint256) {
+        return bids[bidder];
+    }
 }
