@@ -29,17 +29,7 @@ contract MyAuction is Auction {
 
     function endAuction() public virtual override onlyOwner returns (bool) {}
 
-    event BidEvent (address highestBidder, uint highestBid, uint timestamp);
-    function bid() public payable override returns (bool) {
-        require(highestBidder != msg.sender, "already a current hightest bidder");
-        require(msg.value > highestBid, "Only higher bid allowed");
-        highestBidder = msg.sender;
-        highestBid = msg.value;
-        bids[msg.sender] = msg.value;
-        bidders.push(msg.sender);
-        emit BidEvent(msg.sender, msg.value, block.timestamp);
-        return true;
-    }
+    function bid() public virtual override returns (bool) {}
 
     function getStatus() public virtual override returns (int256) {}
 
