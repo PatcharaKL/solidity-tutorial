@@ -78,10 +78,17 @@ contract("MyAuction", function (accounts) {
   });
 
   // // Should not allow to withdraw during the ongoing auction
-  // it("Should not allow to withdraw during the ongoing auction", async function () {
-  //   await MyAuction.deployed();
-  //   return assert.isTrue(false);
-  // });
+  it("Should not allow to withdraw during the ongoing auction", async function () {
+    const auction = await MyAuction.deployed();
+    let withdrawFailed = false;
+    try {
+      await auction.withdraw({from: bidder[0]});
+    } catch (e) {
+      withdrawFailed = false;
+      console.log(e.data.reason);
+    }
+    return assert.isTrue(withdrawFailed, "Any bidder must not be abl to withdraw during ongoing auction");
+  });
 
   // // Should not 
   // it("should assert false", async function () {

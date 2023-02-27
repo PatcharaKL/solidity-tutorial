@@ -52,7 +52,17 @@ contract MyAuction is Auction {
         return (myProduct.Brand, myProduct.SerialNum);
     }
 
-    function withdraw() public virtual override returns (bool) {}
+    event WithdrawEvent(address bidder, uint amount, uint timestamp);
+    function withdraw() public override returns (bool) {
+        require(msg.sender != highestBidder , "Bid winner can't withdraw");
+        require(STATE != AuctionState.STARTED, "Can not withdraw from ongoing auction");
+        require(STATE != AuctionState.DESTRUCTED, "Can not withdraw from destroyed contract");
+        uint amount = bids[msg.sender];
+        delete bids[msg.sender];
+        payable(msg.sender).transfer(amount);
+        emit WithdrawEvent(msg.sender, amount, block.timestamp);
+        return true;
+    }
 
     function getMyBid(
         address bidder
