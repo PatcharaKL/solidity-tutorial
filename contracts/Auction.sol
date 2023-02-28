@@ -28,7 +28,7 @@ abstract contract Auction {
 
     function endAuction() public virtual returns (bool);
 
-    function bid() public virtual returns (bool);
+    function bid() public payable virtual returns (bool);
 
     function getProductInfo()
         public

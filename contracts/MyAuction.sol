@@ -40,7 +40,17 @@ contract MyAuction is Auction {
 
     }
 
-    function bid() public virtual override returns (bool) {}
+    event BidEvent(address bidder, uint value, uint timestamp);
+    function bid() public payable override returns (bool) {
+        require(highestBidder != msg.sender,"alreadly a current highest bidder");
+        require(msg.value > highestBid,"Only higher bid is allowed");
+        highestBidder = msg.sender;
+        highestBid = msg.value;
+        bids[msg.sender] = msg.value;
+        bidders.push(msg.sender);
+        emit BidEvent(msg.sender, msg.value, block.timestamp);
+        return true;
+    }
 
     function getProductInfo()
         public

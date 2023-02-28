@@ -85,7 +85,7 @@ contract("MyAuction", function (accounts) {
       await auction.withdraw({from: bidder[0]});
     } catch (e) {
       withdrawFailed = false;
-      console.log(e.data.reason);
+      console.log(e.reason);
     }
     return assert.isTrue(withdrawFailed, "Any bidder must not be abl to withdraw during ongoing auction");
   });
@@ -102,5 +102,32 @@ contract("MyAuction", function (accounts) {
     const currentState = await auction.STATE.call();
     return assert.equal(currentState, auctionStates.indexOf("ENDED"), "The auction must be closed properly");
   })
-    // // Should not 
+  // // Should not 
+  it("Should allow any withdrawal after the auction has ended", async () => {
+    const auction = await MyAuction.deployed();
+    let i;
+    let success = true
+    try {
+      for(i = 0; i < sampleBidAmountBN.length - 1; i++) {
+        await auction.withdraw({from: bidders[i]})
+      }
+    } catch (e) {
+      success = false
+      console.log(e.reason)
+    }
+    return assert.isTrue(success)
+  })
+
+  it("should not allow to bid after the auction has ended", async () => {
+    const auction = await MyAuction.deployed();
+    let bidAmount = sampleBidAmountBN[sampleBidAmounts.length - 1]
+    bidAmount = bidAmount.addn(1);
+    let bidFailed = false;
+    try {
+      await auction.bid({from: bidders[sampleBidAmountBN.length], value: bidAmount})
+    } catch (e) {
+      bidFailed = true;
+    }
+    return assert.isTrue(bidFailed, "No one must not be able to bid after auction has ended")
+  })
 });
