@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <script src="jquery/dist/jquery.min.js"></script>
+    <script src="bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="web3/dist/web3.min.js"></script>
+    <script src="@truffle/contract/browser-dist/truffle-contract.min.js"></script>
+    <script src="js/auction2.js"></script>
+  </head>
+
+  <body onload="init()">
+    <div class="container-fluid">
+      <div class="page-header text-center mb-3 mt-3">
+        <h2 class="fw-bold">Product Auction Dapp</h2>
+      </div>
+      <hr />
+      <div class="row m-2">
+        <div class="col-3">
+          <form class="card p-4">
+            <legend class="lead text-center fw-bold">Product Details</legend>
+            <br />
+            <table class="mb-3">
+              <tr>
+                <td>
+                  <p class="lead">Brand:</p>
+                </td>
+                <td>
+                  <p class="lead" id="ProductBrand">Not Available</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p class="lead">Serial No:</p>
+                </td>
+                <td>
+                  <p class="lead" id="SerialNumber">Not Available</p>
+                </td>
+              </tr>
+            </table>
+            <hr />
+            <div class="mb-3">
+              <legend class="lead text-center fw-bold">Bid value</legend>
+              <small>eg. 10</small>
+              <div class="form-group">
+                <input class="form-control" type="text" id="Value" value="2" />
+                <p id="valueValidation"></p>
+                <div class="d-grid gap-2">
+                  <button
+                    class="btn btn-secondary"
+                    id="Bid"
+                    type="button"
+                    onClick="bid()"
+                  >
+                    Bid!
+                  </button>
+                </div>
+              </div>
+            </div>
+            <hr />
+            <div class="mb-3 text-center">
+              <legend class="lead fw-bold">Auction Owner Operations</legend>
+              <div class="col">
+                <button
+                  class="btn btn-primary"
+                  id="Cancel"
+                  type="button"
+                  onClick="cancelAuction()"
+                >
+                  Cancel auction!
+                </button>
+                <button
+                  class="btn btn-danger"
+                  id="End"
+                  type="button"
+                  onClick="endAuction()"
+                >
+                  End auction!
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="col-9">
+          <form class="card p-4 ml-2">
+            <legend class="lead fw-bold text-center">Auction Details</legend>
+            <table class="mb-3">
+              <tr>
+                <td class="col-3"><p class="lead">Auction Owner:</p></td>
+                <td>
+                  <p class="lead detailInfo" id="AuctionOwner">Not Available</p>
+                </td>
+              </tr>
+              <tr>
+                <td><p class="lead">Current bidder:</p></td>
+                <td>
+                  <select
+                    id="AccountList"
+                    class="form-select form-select-lg mb-3 lead"
+                    aria-label=".form-select-lg example"
+                  >
+                    <option>Select Account</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td><p class="lead">My Bid:</p></td>
+                <td><p class="lead" id="MyBid">Not Available</p></td>
+              </tr>
+              <tr>
+                <td><p class="lead">Auction End:</p></td>
+                <td><p class="lead" id="AuctionEnd">Not Available</p></td>
+              </tr>
+              <tr>
+                <td><p class="lead">Auction Highest Bidder:</p></td>
+                <td><p class="lead" id="HighestBidder">Not Available</p></td>
+              </tr>
+              <tr>
+                <td><p class="lead">Auction Highest Bid:</p></td>
+                <td><p class="lead" id="HighestBid">Not Available</p></td>
+              </tr>
+              <tr>
+                <td><p class="lead">Auction Status:</p></td>
+                <td><p class="lead" id="State">Not Available</p></td>
+              </tr>
+            </table>
+            <hr />
+            <div class="mb-3">
+              <legend class="lead text-center fw-bold">Events Logs</legend>
+              <ul id="EventsLog"></ul>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

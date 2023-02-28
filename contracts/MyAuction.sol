@@ -42,6 +42,7 @@ contract MyAuction is Auction {
 
     event BidEvent(address bidder, uint value, uint timestamp);
     function bid() public payable override returns (bool) {
+        require(STATE != AuctionState.ENDED ,"Should not allow to bid after the auction ended");
         require(highestBidder != msg.sender,"alreadly a current highest bidder");
         require(msg.value > highestBid,"Only higher bid is allowed");
         highestBidder = msg.sender;
