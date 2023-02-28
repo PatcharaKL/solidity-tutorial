@@ -25,13 +25,22 @@ contract MyAuction is Auction {
         _;
     }
 
-    function cancelAuction() public virtual override onlyOwner returns (bool) {}
+    event CancelEvent(uint timestamp);
+    function cancelAuction() public override onlyOwner returns (bool) {
+        STATE = AuctionState.CANCELLED;
+        emit CancelEvent(block.timestamp);
+        return true;
+    }
 
-    function endAuction() public virtual override onlyOwner returns (bool) {}
+    event EndEvent(address highestBidder, uint highestBid, uint timestamp);
+    function endAuction() public virtual override onlyOwner returns (bool) {
+        STATE = AuctionState.ENDED;
+        emit EndEvent(highestBidder, highestBid, block.timestamp);
+        return true;
+
+    }
 
     function bid() public virtual override returns (bool) {}
-
-    function getStatus() public virtual override returns (int256) {}
 
     function getProductInfo()
         public

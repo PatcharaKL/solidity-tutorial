@@ -30,8 +30,6 @@ abstract contract Auction {
 
     function bid() public virtual returns (bool);
 
-    function getStatus() public virtual returns (int256);
-
     function getProductInfo()
         public
         virtual

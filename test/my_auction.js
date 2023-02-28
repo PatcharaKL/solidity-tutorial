@@ -90,9 +90,17 @@ contract("MyAuction", function (accounts) {
     return assert.isTrue(withdrawFailed, "Any bidder must not be abl to withdraw during ongoing auction");
   });
 
-  // // Should not 
-  // it("should assert false", async function () {
-  //   await MyAuction.deployed();
-  //   return assert.isTrue(false);
-  // });
+  const auctionStates = [
+    "STARTED",
+    "CANCELLED",
+    "ENDED",
+    "DESTRUCTED"
+  ]
+  it("Should close auction properly", async () => {
+    const auction = await MyAuction.deployed();
+    await auction.endAuction({from: accounts[0]});
+    const currentState = await auction.STATE.call();
+    return assert.equal(currentState, auctionStates.indexOf("ENDED"), "The auction must be closed properly");
+  })
+    // // Should not 
 });
